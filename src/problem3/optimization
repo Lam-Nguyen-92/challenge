@@ -1,0 +1,18 @@
+1. Computational Inefficiencies
+1.1. useMemo is not optimized
+    Issue: The useMemo hook 
+        undefined variable (lhsPriority): The condition references lhsPriority, im not sure but i don't see anywhere to import or define this variable.
+        unnecessary multiple computations: getPriority(balance.blockchain) is called twice (once for filtering and once for sorting), 
+1.2. Redundant Calculation of formattedBalances
+    issue: formattedBalances is derived from sortedBalances, but this transformation could be done directly in useMemo, reducing unnecessary iterations.
+1.3. Unoptimized Calculation of usdValue
+    issue: Inside the .map() function for rendering, prices[balance.currency] * balance.amount is computed during every render.
+    we can calculate usdValue during useMemo to avoid redundant calculations on each render.
+2. React Anti-Patterns
+2.1. Using index as the Key in .map()
+    Issue: key={index} is a bad practice in React
+    we can use balance.currency or balance.blockchain as the key instead.
+2.2. Type Inconsistencies
+Issue:
+    The WalletBalance interface does not define blockchain, but it is accessed in the code.
+    sortedBalances contains WalletBalance objects, but rows.map() treats them as FormattedWalletBalance, which is inconsistent.
